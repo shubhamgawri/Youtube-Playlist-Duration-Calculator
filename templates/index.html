@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Playlist Duration Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='youtube-logo.png') }}" alt="YouTube Logo" class="logo">
+        <h1>YouTube Playlist Duration Calculator</h1>
+        <form method="post">
+            <label for="playlist_url">Enter Playlist URL:</label>
+            <input type="text" id="playlist_url" name="playlist_url" placeholder="Link for youtube playlist..." required>
+            <button type="submit">Calculate</button>
+        </form>
+        <div class="loading-spinner" id="loading-spinner"></div>
+        <div class="results">
+            {% if playlist_info %}
+                <h2>Playlist Info</h2>
+                <p><strong>Title:</strong> {{ playlist_info.title }}</p>
+                <p><strong>Number of Videos:</strong> {{ playlist_info.video_count }}</p>
+                <p><strong>Total Duration:</strong> {{ format_duration(playlist_info.total_seconds) }}</p>
+                <h3>Adjusted Durations:</h3>
+                <ul>
+                    <li>1.25x Speed: {{ adjusted_duration(playlist_info.total_seconds, 1.25) }}</li>
+                    <li>1.5x Speed: {{ adjusted_duration(playlist_info.total_seconds, 1.5) }}</li>
+                    <li>2x Speed: {{ adjusted_duration(playlist_info.total_seconds, 2) }}</li>
+                </ul>
+            {% endif %}
+            {% if error %}
+                <p class="error">Error: {{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
